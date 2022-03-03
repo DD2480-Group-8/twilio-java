@@ -33,7 +33,7 @@ public class EventTest {
 
     @Before
     public void setUp() throws Exception {
-        Twilio.init("AC123", "AUTH TOKEN");
+        new Twilio("AC123", "AUTH TOKEN");
     }
 
     @Test

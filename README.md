@@ -75,7 +75,7 @@ If you run into trouble with local tests, use:
 String accountSid = "ACXXXXXX";
 String authToken = "XXXXXXXX";
 
-Twilio.init(accountSid, authToken);
+new Twilio(accountSid, authToken);
 ```
 
 ### Specify Region and/or Edge
@@ -83,7 +83,7 @@ Twilio.init(accountSid, authToken);
 To take advantage of Twilio's [Global Infrastructure](https://www.twilio.com/docs/global-infrastructure), specify the target Region and/or Edge for the client:
 
 ```java
-Twilio.init(accountSid, authToken);
+new Twilio(accountSid, authToken);
 Twilio.setRegion("au1");
 Twilio.setEdge("sydney");
 ```
