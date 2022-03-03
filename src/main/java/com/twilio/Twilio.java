@@ -73,15 +73,15 @@ public class Twilio implements TwilioAPI {
      * {@inheritdoc}
      */
     public void setUsername(final String username) {
-        if (this.username == null) {
+        if (Twilio.username == null) {
             throw new AuthenticationException("Username can not be null");
         }
 
-        if (!username.equals(this.username)) {
+        if (!username.equals(Twilio.username)) {
             this.invalidate();
         }
 
-        this.username = username;
+        Twilio.username = username;
     }
 
     /**
@@ -92,11 +92,11 @@ public class Twilio implements TwilioAPI {
             throw new AuthenticationException("Password can not be null");
         }
 
-        if (!password.equals(this.password)) {
+        if (!password.equals(Twilio.password)) {
             this.invalidate();
         }
 
-        this.password = password;
+        Twilio.password = password;
     }
 
     /**
@@ -107,33 +107,33 @@ public class Twilio implements TwilioAPI {
             throw new AuthenticationException("AccountSid can not be null");
         }
 
-        if (!accountSid.equals(this.accountSid)) {
+        if (!accountSid.equals(Twilio.accountSid)) {
             this.invalidate();
         }
 
-        this.accountSid = accountSid;
+        Twilio.accountSid = accountSid;
     }
 
     /**
      * {@inheritdoc}
      */
     public void setRegion(final String region) {
-        if (!Objects.equals(region, this.region)) {
+        if (!Objects.equals(region, Twilio.region)) {
             this.invalidate();
         }
 
-        this.region = region;
+        Twilio.region = region;
     }
 
     /**
      * {@inheritdoc}
      */
     public void setEdge(final String edge) {
-        if (!Objects.equals(edge, this.edge)) {
+        if (!Objects.equals(edge, Twilio.edge)) {
             this.invalidate();
         }
 
-        this.edge = edge;
+        Twilio.edge = edge;
     }
 
     /**
