@@ -69,7 +69,7 @@ public class Twilio implements TwilioAPI {
     /**
      * {@inheritdoc}
      */
-    public void setUsername(final String username) {
+    public synchronized void setUsername(final String username) {
         if (this.username == null) {
             throw new AuthenticationException("Username can not be null");
         }
@@ -84,7 +84,7 @@ public class Twilio implements TwilioAPI {
     /**
      * {@inheritdoc}
      */
-    public void setPassword(final String password) {
+    public synchronized void setPassword(final String password) {
         if (password == null) {
             throw new AuthenticationException("Password can not be null");
         }
@@ -99,7 +99,7 @@ public class Twilio implements TwilioAPI {
     /**
      * {@inheritdoc}
      */
-    public void setAccountSid(final String accountSid) {
+    public synchronized void setAccountSid(final String accountSid) {
         if (accountSid == null) {
             throw new AuthenticationException("AccountSid can not be null");
         }
@@ -114,7 +114,7 @@ public class Twilio implements TwilioAPI {
     /**
      * {@inheritdoc}
      */
-    public void setRegion(final String region) {
+    public synchronized void setRegion(final String region) {
         if (!Objects.equals(region, this.region)) {
             this.invalidate();
         }
@@ -125,7 +125,7 @@ public class Twilio implements TwilioAPI {
     /**
      * {@inheritdoc}
      */
-    public void setEdge(final String edge) {
+    public synchronized void setEdge(final String edge) {
         if (!Objects.equals(edge, this.edge)) {
             this.invalidate();
         }
@@ -147,7 +147,7 @@ public class Twilio implements TwilioAPI {
         return restClient;
     }
 
-    private synchronized TwilioRestClient buildRestClient() {
+    private TwilioRestClient buildRestClient() {
         if (this.username == null || this.password == null) {
             throw new AuthenticationException(
                 "TwilioRestClient was used before AccountSid and AuthToken were set, please call Twilio.init()"
@@ -180,7 +180,7 @@ public class Twilio implements TwilioAPI {
      *
      * @return the Twilio executor service
      */
-    public static synchronized ExecutorService getExecutorService() {
+    public static ExecutorService getExecutorService() {
         if (Twilio.executorService == null) {
             Twilio.executorService = Executors.newCachedThreadPool();
         }
@@ -192,7 +192,7 @@ public class Twilio implements TwilioAPI {
      *
      * @param executorService executor service to use
      */
-    public static synchronized void setExecutorService(final ExecutorService executorService) {
+    public static void setExecutorService(final ExecutorService executorService) {
         Twilio.executorService = executorService;
     }
 
@@ -201,7 +201,7 @@ public class Twilio implements TwilioAPI {
      *
      * @throws CertificateValidationException if the connection fails
      */
-    public static synchronized void validateSslCertificate() {
+    public static void validateSslCertificate() {
         final NetworkHttpClient client = new NetworkHttpClient();
         final Request request = new Request(HttpMethod.GET, "https://api.twilio.com:8443");
 
