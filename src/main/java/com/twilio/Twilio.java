@@ -19,15 +19,12 @@ import java.util.concurrent.Executors;
  */
 public class Twilio implements TwilioAPI {
 
-    public static final String VERSION = "8.27.0";
-    public static final String JAVA_VERSION = System.getProperty("java.version");
-
-    private static String username = System.getenv("TWILIO_ACCOUNT_SID");
-    private static String password = System.getenv("TWILIO_AUTH_TOKEN");
-    private static String accountSid; // username used if Twilio is null
-    private static String region = System.getenv("TWILIO_REGION");
-    private static String edge = System.getenv("TWILIO_EDGE");
-    private static volatile TwilioRestClient restClient;
+    private String username = System.getenv("TWILIO_ACCOUNT_SID");
+    private String password = System.getenv("TWILIO_AUTH_TOKEN");
+    private String accountSid; // username used if Twilio is null
+    private String region = System.getenv("TWILIO_REGION");
+    private String edge = System.getenv("TWILIO_EDGE");
+    private volatile TwilioRestClient restClient;
     private static volatile ExecutorService executorService;
 
     /*
@@ -73,15 +70,15 @@ public class Twilio implements TwilioAPI {
      * {@inheritdoc}
      */
     public void setUsername(final String username) {
-        if (Twilio.username == null) {
+        if (this.username == null) {
             throw new AuthenticationException("Username can not be null");
         }
 
-        if (!username.equals(Twilio.username)) {
+        if (!username.equals(this.username)) {
             this.invalidate();
         }
 
-        Twilio.username = username;
+        this.username = username;
     }
 
     /**
@@ -92,11 +89,11 @@ public class Twilio implements TwilioAPI {
             throw new AuthenticationException("Password can not be null");
         }
 
-        if (!password.equals(Twilio.password)) {
+        if (!password.equals(this.password)) {
             this.invalidate();
         }
 
-        Twilio.password = password;
+        this.password = password;
     }
 
     /**
@@ -107,33 +104,33 @@ public class Twilio implements TwilioAPI {
             throw new AuthenticationException("AccountSid can not be null");
         }
 
-        if (!accountSid.equals(Twilio.accountSid)) {
+        if (!accountSid.equals(this.accountSid)) {
             this.invalidate();
         }
 
-        Twilio.accountSid = accountSid;
+        this.accountSid = accountSid;
     }
 
     /**
      * {@inheritdoc}
      */
     public void setRegion(final String region) {
-        if (!Objects.equals(region, Twilio.region)) {
+        if (!Objects.equals(region, this.region)) {
             this.invalidate();
         }
 
-        Twilio.region = region;
+        this.region = region;
     }
 
     /**
      * {@inheritdoc}
      */
     public void setEdge(final String edge) {
-        if (!Objects.equals(edge, Twilio.edge)) {
+        if (!Objects.equals(edge, this.edge)) {
             this.invalidate();
         }
 
-        Twilio.edge = edge;
+        this.edge = edge;
     }
 
     /**
@@ -142,33 +139,29 @@ public class Twilio implements TwilioAPI {
      * @return the Twilio Rest Client
      * @throws AuthenticationException if initialization required and either accountSid or authToken is null
      */
-    public static synchronized TwilioRestClient getRestClient() {
+    public synchronized TwilioRestClient getRestClient() {
         if (restClient == null) {
-            synchronized (Twilio.class) {
-                if (restClient == null) {
-                    restClient = buildRestClient();
-                }
-            }
+            restClient = buildRestClient();
         }
 
         return restClient;
     }
 
-    private static synchronized TwilioRestClient buildRestClient() {
-        if (Twilio.username == null || Twilio.password == null) {
+    private synchronized TwilioRestClient buildRestClient() {
+        if (this.username == null || this.password == null) {
             throw new AuthenticationException(
                 "TwilioRestClient was used before AccountSid and AuthToken were set, please call Twilio.init()"
             );
         }
 
-        TwilioRestClient.Builder builder = new TwilioRestClient.Builder(Twilio.username, Twilio.password);
+        TwilioRestClient.Builder builder = new TwilioRestClient.Builder(this.username, this.password);
 
-        if (Twilio.accountSid != null) {
-            builder.accountSid(Twilio.accountSid);
+        if (this.accountSid != null) {
+            builder.accountSid(this.accountSid);
         }
 
-        builder.region(Twilio.region);
-        builder.edge(Twilio.edge);
+        builder.region(this.region);
+        builder.edge(this.edge);
 
         return builder.build();
     }
@@ -178,8 +171,8 @@ public class Twilio implements TwilioAPI {
      *
      * @param restClient rest client to use
      */
-    public static synchronized void setRestClient(final TwilioRestClient restClient) {
-        Twilio.restClient = restClient;
+    public synchronized void setRestClient(final TwilioRestClient restClient) {
+        this.restClient = restClient;
     }
 
     /**
@@ -229,7 +222,7 @@ public class Twilio implements TwilioAPI {
      * Invalidates the volatile state held in the Twilio singleton.
      */
     private void invalidate() {
-        Twilio.restClient = null;
+        this.restClient = null;
     }
 
     /**

@@ -8,6 +8,9 @@ import java.util.concurrent.ExecutorService;
 
 interface TwilioAPI {
 
+    String VERSION = "9.0.0";
+    String JAVA_VERSION = System.getProperty("java.version");
+
     /**
      * Set the username.
      *
