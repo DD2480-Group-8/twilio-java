@@ -70,7 +70,7 @@ public class Twilio implements TwilioAPI {
      * {@inheritdoc}
      */
     public synchronized void setUsername(final String username) {
-        if (this.username == null) {
+        if (username == null) {
             throw new AuthenticationException("Username can not be null");
         }
 
@@ -84,7 +84,7 @@ public class Twilio implements TwilioAPI {
     /**
      * {@inheritdoc}
      */
-    public synchronized void setPassword(final String password) {
+    public void setPassword(final String password) {
         if (password == null) {
             throw new AuthenticationException("Password can not be null");
         }
