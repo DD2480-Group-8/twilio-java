@@ -84,7 +84,7 @@ public class Twilio implements TwilioAPI {
     /**
      * {@inheritdoc}
      */
-    public void setPassword(final String password) {
+    public synchronized void setPassword(final String password) {
         if (password == null) {
             throw new AuthenticationException("Password can not be null");
         }
